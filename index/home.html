@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>석관고등학교 길찾기</title>
   <style>
     @font-face {
@@ -17,6 +17,7 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
+      min-height: -webkit-fill-available;
     }
 
     .screen {
@@ -28,7 +29,7 @@
       align-items: center;
       color: #6A635D;
       font-family: '의연체', sans-serif;
-      overflow: hidden;
+      overflow: visible;
       position: relative;
     }
 
@@ -141,9 +142,9 @@
 
   <!-- 도움말 팝업 -->
   <div id="helpPopup" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; flex-direction:column;">
-    <div style="position:relative; width:88vw; max-height:85vh; display:flex; flex-direction:column; align-items:center;">
+    <div style="position:relative; width:88vw; max-height:75vh; display:flex; flex-direction:column; align-items:center;">
 
-      <div id="slideContainer" style="width:100%; overflow:hidden; border-radius:3vw;">
+      <div id="slideContainer" style="width:100%; overflow-y:auto; overflow-x:hidden; border-radius:3vw; max-height:75vh;">
         <div id="slideTrack" style="display:flex; transition:transform 0.3s ease;">
           <div class="slide" style="min-width:100%;">
             <img src="./help_home.png" style="width:100%; border-radius:3vw; display:block;">
