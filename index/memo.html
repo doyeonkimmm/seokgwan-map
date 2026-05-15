@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>메모</title>
+  <style>
+    @font-face {
+      font-family: '의연체';
+      src: url('./온글잎 의연체.ttf') format('truetype');
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #FFF3F3;
+      min-height: 100vh;
+      font-family: '의연체', sans-serif;
+      color: #6A635D;
+    }
+
+    .screen {
+      width: 100vw;
+      min-height: 100vh;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .topbar {
+      width: 100%;
+      background: #FFF3F3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8vh 6vw;
+    }
+
+    .back-btn img {
+      width: 7vw;
+      height: 3.5vh;
+      cursor: pointer;
+      object-fit: contain;
+    }
+
+    .topbar-title {
+      font-size: 5vw;
+      color: #6A635D;
+    }
+
+    .help-btn img {
+      width: 8vw;
+      height: 3.9vh;
+      object-fit: contain;
+    }
+
+    .title-area {
+      width: 100%;
+      background: #FFF3F3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2vh 0 2.5vh;
+    }
+
+    .title-text {
+      font-size: 8vw;
+      color: #6A635D;
+    }
+
+    .subtitle-text {
+      font-size: 4vw;
+      color: #6A635D;
+      margin-top: 0.5vh;
+    }
+
+    .memo-list {
+      width: 88vw;
+      margin: 3vh auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3vh;
+    }
+
+    .memo-card {
+  position: relative;
+  width: 100%;
+  background-image: url('./memo_back.png');
+  background-size: 100% 100%;
+  padding: 22% 12% 10% 10%; 
+}
+
+.memo-bg {
+  width: 100%;
+  display: none;
+  mix-blend-mode: multiply;
+}
+
+.memo-content {
+  position: absolute;
+  top: 28%;
+  left: 10%;
+  right: 5%;
+  bottom: 10%;
+  display: flex;
+  flex-direction: column;
+  padding: 2vw;
+  position: static;
+}
+    
+
+    .memo-room {
+      font-size: 5vw;
+      color: #9a5050;
+      margin-bottom: 1.5vh;
+      display: flex;
+      align-items: center;
+      gap: 2vw;
+    }
+
+    .memo-text {
+      font-size: 4.5vw;
+      color: #6A635D;
+      line-height: 1.8;
+      border-top: 1px dashed #c9a8a8;
+      padding-top: 1.5vh;
+      white-space: pre-wrap;
+    }
+
+    .memo-delete {
+      position: absolute;
+      top: 2vh;
+      right: 4vw;
+      font-size: 4vw;
+      color: #c9a8a8;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: '의연체', sans-serif;
+    }
+
+    .empty-msg {
+      text-align: center;
+      color: #c9a8a8;
+      font-size: 5vw;
+      margin-top: 10vh;
+    }
+
+    .bottombar {
+      width: 100%;
+      background: #FFF3F3;
+      margin-top: auto;
+      min-height: 6vh;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen">
+
+    <div class="topbar">
+      <div class="back-btn" onclick="location.href='home.html'">
+        <img src="./back.png" alt="뒤로가기">
+      </div>
+      <span class="topbar-title"></span>
+      <div class="help-btn">
+        <img src="./help.png" alt="도움말">
+      </div>
+    </div>
+
+    <div class="title-area">
+      <span class="title-text">메모</span>
+      <span class="subtitle-text">장소별로 남긴 메모들이에요</span>
+    </div>
+
+    <div class="memo-list" id="memoList"></div>
+
+    <div class="bottombar"></div>
+
+  </div>
+
+  <script>
+    function getMemos() {
+      try {
+        return JSON.parse(localStorage.getItem('schoolMemos') || '{}')
+      } catch { return {} }
+    }
+
+    function deleteMemo(key) {
+      const memos = getMemos()
+      delete memos[key]
+      localStorage.setItem('schoolMemos', JSON.stringify(memos))
+      renderMemos()
+    }
+
+    function renderMemos() {
+      const container = document.getElementById('memoList')
+      const memos = getMemos()
+      const keys = Object.keys(memos)
+
+      if (keys.length === 0) {
+        container.innerHTML = '<div class="empty-msg">아직 메모가 없어요 (っ °Д °;)っ</div>'
+        return
+      }
+
+      container.innerHTML = ''
+      keys.forEach(key => {
+        const parts = key.split('_')
+        const floor = parts[0]
+        const roomName = parts.slice(1).join('_')
+        const text = memos[key]
+
+        const card = document.createElement('div')
+        card.className = 'memo-card'
+        card.innerHTML = `
+  <img src="./memo_back.png" class="memo-bg" alt="메모지">
+  <div class="memo-content">
+    <div class="memo-room">${roomName} <span style="font-size:3.5vw; color:#c9a8a8;">(${floor}층)</span></div>
+    <div class="memo-text">${text}</div>
+  </div>
+  <button class="memo-delete" onclick="deleteMemo('${key}')">삭제</button>
+`
+        container.appendChild(card)
+      })
+    }
+
+    renderMemos()
+  </script>
+</body>
+</html>

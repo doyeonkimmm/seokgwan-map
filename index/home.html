@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>석관고등학교 길찾기</title>
+  <style>
+    @font-face {
+      font-family: '의연체';
+      src: url('./온글잎\ 의연체.ttf') format('truetype');
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .screen {
+      width: 100vw;
+      min-height: 100vh;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #6A635D;
+      font-family: '의연체', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .topbar {
+      width: 100%;
+      background: #FFF3F3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8vh 6vw;
+    }
+
+    .help-btn img { width: 8vw; height: 3.9vh; cursor: pointer; }
+    .memo-btn img { width: 7vw; height: 3.5vh; object-fit: contain; cursor: pointer; }
+
+    .hero {
+      left: 100vw;
+      top: 100vh;
+      width: 150vw;
+      height: 40vh;
+    }
+
+    .hero img { width: 153vw; height: 40vh; }
+
+    .school-title {
+      position: absolute;
+      top: 25%; left: 45%;
+      transform: translate(-50%, -50%);
+      font-size: 7.42vw;
+      line-height: 1.1;
+      color: #6A635D;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 6.25vh;
+      margin: 5vh auto 0;
+      width: 36.89vw;
+    }
+
+    .menu-label { font-size: 7.42vw; color: #6A635D; }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 5.09vw;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .arrow-svg { width: 6vw; height: 2.1vh; }
+  </style>
+</head>
+<body>
+  <div class="screen">
+
+    <div class="topbar">
+      <div class="memo-btn" onclick="location.href='memo.html'">
+        <img src="./memo_icon.png" alt="메모">
+      </div>
+      <div class="help-btn" onclick="openHelp()">
+        <img src="./help.png" alt="도움말">
+      </div>
+    </div>
+
+    <div class="hero">
+      <img src="./logo.png" alt="학교 이미지">
+      <div class="school-title">석관고등학교<br>길찾기</div>
+    </div>
+
+    <nav class="menu">
+      <div class="menu-item" onclick="location.href='map/index.html'">
+        <img src="narrow.png" class="arrow-svg">
+        <span class="menu-label">길찾기</span>
+      </div>
+      <div class="menu-item" onclick="location.href='place.html'">
+        <img src="narrow.png" class="arrow-svg">
+        <span class="menu-label">시설안내</span>
+      </div>
+      <div class="menu-item" onclick="openMaking()">
+        <img src="narrow.png" class="arrow-svg">
+        <span class="menu-label">제작 과정</span>
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- 제작과정 팝업 -->
+  <div id="makingPopup" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+    <div style="width:90vw; position:relative;">
+      <button onclick="closeMaking()" style="position:absolute; top:-4vh; right:0; font-size:7vw; color:#fff; background:none; border:none; cursor:pointer; font-family:'의연체',sans-serif;">✕</button>
+      <img src="./comment.png" style="width:100%; display:block; border-radius:2vw;">
+      <button onclick="openPDF()" style="position:absolute; bottom:31.5%; left:25%; transform:translateX(-50%); background:none; border:none; font-family:'의연체',sans-serif; font-size:5vw; color:#6A635D; cursor:pointer; white-space:nowrap; text-decoration:underline; text-underline-offset:4px; text-decoration-color:#c9a8a8;">📄클릭</button>
+    </div>
+  </div>
+
+  <!-- PDF 팝업 -->
+  <div id="pdfPopup" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+    <div style="width:90vw; height:80vh; background:#fff; border-radius:3vw; border:1.5px solid #c9a8a8; display:flex; flex-direction:column; overflow:hidden;">
+      <div style="background:#FFF3F3; display:flex; justify-content:space-between; align-items:center; padding:1.5vh 4vw; border-bottom:1px solid #f0e0e0;">
+        <span style="font-size:5vw; color:#6A635D; font-family:'의연체',sans-serif;">제작 보고서</span>
+        <button onclick="closePDF()" style="font-size:6vw; color:#6A635D; background:none; border:none; cursor:pointer;">✕</button>
+      </div>
+      <iframe src="./report.pdf" style="flex:1; border:none;"></iframe>
+    </div>
+  </div>
+
+  <!-- 도움말 팝업 -->
+  <div id="helpPopup" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; flex-direction:column;">
+    <div style="position:relative; width:88vw; max-height:85vh; display:flex; flex-direction:column; align-items:center;">
+
+      <div id="slideContainer" style="width:100%; overflow:hidden; border-radius:3vw;">
+        <div id="slideTrack" style="display:flex; transition:transform 0.3s ease;">
+          <div class="slide" style="min-width:100%;">
+            <img src="./help_home.png" style="width:100%; border-radius:3vw; display:block;">
+          </div>
+          <div class="slide" style="min-width:100%;">
+            <img src="./help_location.png" style="width:100%; border-radius:3vw; display:block;">
+          </div>
+          <div class="slide" style="min-width:100%;">
+            <img src="./help_location_acc.png" style="width:100%; border-radius:3vw; display:block;">
+          </div>
+          <div class="slide" style="min-width:100%;">
+            <img src="./help_place.png" style="width:100%; border-radius:3vw; display:block;">
+          </div>
+          <div class="slide" style="min-width:100%; position:relative;">
+            <div style="text-align:center; color:#fff; font-family:'의연체',sans-serif; font-size:5vw; margin-bottom:1vh;">메모 기능 사용법</div>
+            <video src="./help_memo.mp4" style="width:100%; border-radius:3vw; display:block;" autoplay muted playsinline controls></video>
+          </div>
+        </div>
+      </div>
+
+      <div id="indicators" style="display:flex; gap:2vw; margin-top:2vh;">
+        <div class="dot" style="width:10px; height:10px; border-radius:50%; background:#fff;"></div>
+        <div class="dot" style="width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.4);"></div>
+        <div class="dot" style="width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.4);"></div>
+        <div class="dot" style="width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.4);"></div>
+        <div class="dot" style="width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.4);"></div>
+      </div>
+
+      <button id="closeHelpBtn" onclick="closeHelp()" style="display:none; margin-top:2vh; padding:1.5vh 8vw; background:#FFF3F3; border:1.5px solid #c9a8a8; border-radius:2vw; font-family:'의연체',sans-serif; font-size:5vw; color:#6A635D; cursor:pointer;">확인</button>
+
+      <div id="dontShowWrap" style="display:none; margin-top:1.5vh; align-items:center; gap:2vw;">
+        <input type="checkbox" id="dontShow" style="width:4vw; height:4vw; cursor:pointer;">
+        <label for="dontShow" style="font-family:'의연체',sans-serif; font-size:4vw; color:#fff; cursor:pointer;">다시 표시하지 않음</label>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 제작과정/PDF
+    function openMaking() { document.getElementById('makingPopup').style.display = 'flex' }
+    function closeMaking() { document.getElementById('makingPopup').style.display = 'none' }
+    function openPDF() { document.getElementById('pdfPopup').style.display = 'flex' }
+    function closePDF() { document.getElementById('pdfPopup').style.display = 'none' }
+
+    // 도움말 슬라이드
+    let currentSlide = 0
+    const totalSlides = 5
+    let startX = 0
+
+    document.getElementById('slideContainer').addEventListener('touchstart', e => { startX = e.touches[0].clientX })
+    document.getElementById('slideContainer').addEventListener('touchend', e => {
+      const diff = startX - e.changedTouches[0].clientX
+      if (diff > 50) nextSlide()
+      else if (diff < -50) prevSlide()
+    })
+
+    function updateSlide() {
+      document.getElementById('slideTrack').style.transform = `translateX(-${currentSlide * 100}%)`
+      document.querySelectorAll('.dot').forEach((d, i) => {
+        d.style.background = i === currentSlide ? '#fff' : 'rgba(255,255,255,0.4)'
+      })
+      if (currentSlide === totalSlides - 1) {
+        document.getElementById('closeHelpBtn').style.display = 'block'
+        document.getElementById('dontShowWrap').style.display = 'flex'
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide() }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) { currentSlide--; updateSlide() }
+    }
+
+    function openHelp() {
+      currentSlide = 0
+      updateSlide()
+      document.getElementById('closeHelpBtn').style.display = 'none'
+      document.getElementById('dontShowWrap').style.display = 'none'
+      document.getElementById('dontShow').checked = false
+      document.getElementById('helpPopup').style.display = 'flex'
+      document.body.style.overflow = 'hidden'
+    }
+
+    function closeHelp() {
+      if (document.getElementById('dontShow').checked) {
+        localStorage.setItem('dontShowHelp', 'true')
+      }
+      document.getElementById('helpPopup').style.display = 'none'
+      document.body.style.overflow = ''
+      document.querySelector('.screen').style.overflow = ''
+    }
+
+    window.addEventListener('load', () => {
+  if (localStorage.getItem('dontShowHelp') !== 'true' && !sessionStorage.getItem('helpShown')) {
+    sessionStorage.setItem('helpShown', 'true')
+    openHelp()
+  }
+})
+  </script>
+</body>
+</html>

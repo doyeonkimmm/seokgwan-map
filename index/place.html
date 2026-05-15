@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>시설 안내</title>
+  <style>
+    @font-face {
+      font-family: '의연체';
+      src: url('./온글잎 의연체.ttf') format('truetype');
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #FFF3F3;
+      min-height: 100vh;
+      font-family: '의연체', sans-serif;
+      color: #6A635D;
+    }
+
+    .screen {
+      width: 100vw;
+      min-height: 100vh;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* 상단 바 */
+    .topbar {
+      width: 100%;
+      background: #FFF3F3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8vh 6vw;
+    }
+
+    .back-btn img {
+      width: 7vw;
+      height: 3.5vh;
+      cursor: pointer;
+      object-fit: contain;
+    }
+
+    .help-btn img {
+      width: 8vw;
+      height: 3.9vh;
+      object-fit: contain;
+    }
+
+    /* 타이틀 영역 */
+    .title-area {
+      width: 100%;
+      background: #FFF3F3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2vh 0 2.5vh;
+    }
+
+    .title-text {
+      font-size: 10vw;
+      color: #6A635D;
+    }
+
+    .subtitle-text {
+      font-size: 6vw;
+      color: #6A635D;
+      margin-top: 0.5vh;
+    }
+
+    /* 검색창 */
+    .search-wrap {
+      width: 88vw;
+      margin: 2vh auto 0;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1.2vh 3vw 1.2vh 14vw;
+      border: none;
+      font-family: '의연체', sans-serif;
+      font-size: 6vw;
+      color: #6A635D;
+      background-size: 100% 100%;
+      background-color: transparent;
+      outline: none;
+  background-image: url('./search.png'); 
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 3vw;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 4.5vw;
+      color: #c9a8a8;
+    }
+
+    /* 카테고리 버튼 */
+    .category-btns {
+      display: flex;
+      gap: 3vw;
+      margin: 2.5vh auto 0;
+      width: 88vw;
+    }
+
+    .cat-btn {
+      flex: 1;
+      padding: 1.2vh 0;
+      border: none;
+      background-image: url('./button1.png');
+      background-size: 100% 100%;
+      background-color: transparent;
+      font-family: '의연체', sans-serif;
+      font-size: 6vw;
+      color: #6A635D;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .cat-btn.active {
+      background-image: url('./button1.png');
+      background-color: #FFF3F3;
+    }
+
+    /* 시설 목록 */
+    .facility-list {
+      width: 100%;
+      margin-top: 2vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .facility-item {
+      width: 100%;
+      padding: 2vh 6vw;
+      border-bottom: 1px solid #f0e0e0;
+      display: flex;
+      flex-direction: column;
+      gap: 1vh;
+    }
+
+    /* 사진 프레임 */
+    .photo-frame {
+      width: 100%;
+      height: 20vh;
+      border: none;
+      background-image: url('./image_frame.png');
+      background-size: 100% 100%;
+      background-color: transparent;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 시설명 행 */
+    .facility-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .facility-name-wrap {
+      display: flex;
+      align-items: center;
+      gap: 2vw;
+    }
+
+    .arrow-img {
+      width: 6vw;
+      height: 2.5vh;
+      object-fit: contain;
+    }
+
+    .facility-name {
+      font-size: 6vw;
+      color: #6A635D;
+    }
+
+    .pin-img {
+      width: 7vw;
+      object-fit: contain;
+    }
+
+    .facility-desc {
+      font-size: 4vw;
+      color: #6A635D;
+      margin-left: 8vw;
+      white-space: pre-wrap;
+    }
+
+    /* 하단 바 */
+    .bottombar {
+      width: 100%;
+      background: #FFF3F3;
+      margin-top: auto;
+      min-height: 6vh;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen">
+
+    <div class="topbar">
+      <div class="back-btn" onclick="location.href='home.html'">
+        <img src="./back.png" alt="뒤로가기">
+      </div>
+    </div>
+
+    <div class="title-area">
+      <span class="title-text">시설 안내</span>
+      <span class="subtitle-text">궁금한 시설을 클릭해주세요. ○(∩_∩)○</span>
+
+      <div class="search-wrap">
+    
+        <input class="search-input" type="text" id="searchInput" oninput="filterFacilities()">
+      </div>
+    </div>
+
+    <div class="category-btns">
+      <button class="cat-btn active" onclick="setCategory('교무실', this)">교무실</button>
+      <button class="cat-btn" onclick="setCategory('편의시설', this)">편의시설</button>
+      <button class="cat-btn" onclick="setCategory('특별실', this)">특별실</button>
+    </div>
+
+    <div class="facility-list" id="facilityList"></div>
+
+    <div class="bottombar"></div>
+
+  </div>
+
+  <script>
+    const DATA = {
+      '교무실': [
+        { name: '생활교육부', desc: '우리 학교 학생의 인성, 습관 교육을 담당합니다. \n사복을 입고 이곳을 지나가지 마세요!!!!', pin: true, floor:4},
+        { name: '과학정보부', desc: '과학과 정보 기술 교육을 담당합니다.', pin: false },
+        { name: '체육안전교육부', desc: '체육 수업과 안전 교육을 담당합니다.',  pin: false },
+        { name: '상담복지부', desc: '학생들의 상담과 복지 서비스를 제공합니다.', pin: false },
+        { name: '진로진학지원부', desc: '진로와 진학에 대한 지원을 제공합니다.', pin: false },
+        { name: '창의체험교육부', desc: '제가 개인적으로 좋아하는 교무실입니다. \n학교의 다양한 행사와 축제를 담당합니다.',  pin: true ,floor:4},
+        { name: '1,2학년부', desc: '1,2학년 각 반의 선생님들께서 계시는 교무실입니다.',  pin: true ,floor:4},
+        { name: '3학년부', desc: '3학년 각 반의 선생님들께서 계시는 교무실입니다.',  pin: true ,floor:2},
+        { name: '교육연구부 & 교무기획부', desc: '교육 연구와 교무 계획을 담당합니다.', pin: false },
+      ],
+      '편의시설': [
+        { name: '더불어숲', desc: '석관고의 유일한 자습실입니다. \n정말정말 쾌적하고 좋아요~ 한번씩 가서 공부해보세여!', photo: '', pin: false },
+        { name: '꿈담학습카페', desc: '저는 이 작업을 하면서 꿈담학습카페라는 이름을 처음 들어보았습니다. \n학습카페지만 학습을 하는 친구들은 본 적이 없네요. (°ー°〃) \n저는 보통 점심시간에 이곳에 누워있습니다. 그러다 종종 쉬는시간이\n끝나는 종소리를 못 듣곤 하죠.ε=ε=ε=┏(゜ロ゜;)┛ ', photo: '', pin: true ,floor:4},
+      ],
+      '특별실': [
+        { name: '음악실', desc: '제가 정말 좋아하는 공간입니다. \n여기서 점심시간마다 드럼을 연주했던 추억이 있네요. \n친구들과 함께 밴드연주를 하다보면 제가 마치 데이식스가 된 기분입니다. ', photo: '', pin: true ,floor:4},
+        { name: '시청각실', desc: '여기서는 가끔 진로 강연을 하기도 하고, 영화도 보는 곳인데요~ \n의자가 아주 편하고 보조테이블까지 있어서 CGV 안 부러운 공간입니다!', photo: '', pin: false },
+        { name: '설렘on실', desc: '저는 여기서 자습을 했던 기억이 있는데요. 사실 용도를 잘 모르겠습니다. \n다용도로 쓰이는 듯 합니다.', photo: '', pin: true ,floor:4},
+        { name: '미술실', desc: '여기도 제가 좋아하는 공간인데요~ \n웬만한 미술품이 있어 미술을 할 맛이 납니다. \n가끔 학교 생활 중 필요한 미술용품이 있다면 \n친절하신 미술쌤께서 용품을 빌려주시기도 합니다.', photo: '', pin: true,floor:4 },
+        { name: '모둠학습실', desc: '여기는 최근 새롭게 신설된 공간인데요. \n저는 여길 한번도 들어가보진 못했습니다. \n여기서 수업을 진행하는 소수의 과목이 있기는 합니다만, \n여기도 학습을 빙자한 점심시간 휴식공간인것 같네요 ¯\_(ツ)_/¯', photo: '', pin: true ,floor:3},
+      ],
+    }
+
+    let currentCategory = '교무실'
+
+    function setCategory(cat, btn) {
+      currentCategory = cat
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'))
+      btn.classList.add('active')
+      document.getElementById('searchInput').value = ''
+      renderList(DATA[cat])
+    }
+
+    function filterFacilities() {
+      const query = document.getElementById('searchInput').value
+      const list = DATA[currentCategory].filter(f => f.name.includes(query))
+      renderList(list)
+    }
+
+        function filterFacilities() {
+      const query = document.getElementById('searchInput').value
+      const list = DATA[currentCategory].filter(f => f.name.includes(query))
+      renderList(list)
+    }
+
+    function renderList(items) {
+  const container = document.getElementById('facilityList')
+  container.innerHTML = ''
+  items.forEach(item => {
+    const div = document.createElement('div')
+    div.className = 'facility-item'
+    div.innerHTML = `
+      ${item.photo !== undefined ? `
+        <div class="photo-frame">
+          ${item.photo ? `<img src="${item.photo}" alt="${item.name}">` : ''}
+        </div>` : ''}
+      <div class="facility-row">
+        <div class="facility-name-wrap">
+          <img src="./narrow.png" class="arrow-img" alt="">
+          <span class="facility-name">${item.name}</span>
+        </div>
+        ${item.pin && item.floor ? `<img src="./pin.png" class="pin-img" alt="위치" style="cursor:pointer" onclick="location.href='map/index.html?floor=${item.floor}'">` : item.pin ? `<img src="./pin.png" class="pin-img" alt="위치">` : ''}
+      </div>
+      <div class="facility-desc">설명 : ${item.desc}</div>
+    `
+    container.appendChild(div)
+  })
+}
+
+    renderList(DATA['교무실'])
+  </script>
+</body>
+</html>
+
+  </script>
+</body>
+</html>
