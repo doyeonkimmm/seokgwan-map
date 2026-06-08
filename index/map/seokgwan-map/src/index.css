@@ -4,6 +4,12 @@
   padding: 0;
 }
 
+html, body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background: #fdf0f0;
   font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;

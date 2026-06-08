@@ -10,6 +10,7 @@
       src: url('./온글잎 의연체.ttf') format('truetype');
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; min-height: 100%; overflow-x: hidden; }
 
     body {
       background: #FFF3F3;
@@ -19,12 +20,13 @@
     }
 
     .screen {
-      width: 100vw;
+      width: 100%;
       min-height: 100vh;
       background: #ffffff;
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow: hidden;
     }
 
     .topbar {

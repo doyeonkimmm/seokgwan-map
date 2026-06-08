@@ -10,6 +10,11 @@
       src: url('./온글잎\ 의연체.ttf') format('truetype');
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
 
     body {
       background: #ffffff;
@@ -21,7 +26,7 @@
     }
 
     .screen {
-      width: 100vw;
+      width: 100%;
       min-height: 100vh;
       background: #ffffff;
       display: flex;
@@ -29,7 +34,7 @@
       align-items: center;
       color: #6A635D;
       font-family: '의연체', sans-serif;
-      overflow: visible;
+      overflow: hidden;
       position: relative;
     }
 
@@ -46,17 +51,22 @@
     .memo-btn img { width: 7vw; height: 3.5vh; object-fit: contain; cursor: pointer; }
 
     .hero {
-      left: 100vw;
-      top: 100vh;
-      width: 150vw;
+      width: 100%;
       height: 40vh;
+      position: relative;
+      overflow: hidden;
     }
 
-    .hero img { width: 153vw; height: 40vh; }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
     .school-title {
       position: absolute;
-      top: 25%; left: 45%;
+      top: 25%; left: 50%;
       transform: translate(-50%, -50%);
       font-size: 7.42vw;
       line-height: 1.1;

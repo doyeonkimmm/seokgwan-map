@@ -16,7 +16,7 @@ function App() {
   }
 
   return (
-    <div style={{ maxWidth: 390, margin: '0 auto', padding: 16 }}>
+    <div style={{ width: '100%', maxWidth: 390, margin: '0 auto', padding: 16, minHeight: '100vh' }}>
       <div style={{ width: '100%', aspectRatio: '750/480', background: '#fff', border: '1px solid #ccc', borderRadius: 8, overflow: 'hidden' }}>
         <FloorMap
           floor={currentFloor}
