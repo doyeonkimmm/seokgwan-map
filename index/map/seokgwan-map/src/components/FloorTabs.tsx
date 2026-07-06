@@ -1,4 +1,4 @@
-type Floor = 1 | 2 | 3 | 4
+import type { Floor } from '../schoolGraph'
 
 interface Props {
   currentFloor: Floor
@@ -9,21 +9,32 @@ export default function FloorTabs({ currentFloor, onChange }: Props) {
   const floors: Floor[] = [1, 2, 3, 4]
 
   return (
-    <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+    <div style={{
+      display: 'flex',
+      gap: '2vw',
+      margin: '5vh auto 0',
+      width: '88vw',
+      justifyContent: 'center',
+    }}>
       {floors.map((f) => (
         <button
           key={f}
           onClick={() => onChange(f)}
           style={{
-            flex: 1,
-            padding: '8px 0',
-            borderRadius: 10,
-            border: '2px solid #c8b8b8',
-            background: currentFloor === f ? '#fff0f0' : '#fff',
-            color: currentFloor === f ? '#903030' : '#666',
-            fontWeight: currentFloor === f ? 600 : 400,
+            width: '25vw',
+            height: '5.5vh',
+            border: 'none',
+            fontFamily: "'온글잎 의연체', sans-serif",
+            fontSize: '7vw',
+            color: currentFloor === f ? '#9a5050' : '#6A635D',
             cursor: 'pointer',
-            fontSize: 15,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundImage: "url('./1f.png')",
+            backgroundSize: '100% 100%',
+            backgroundColor: 'transparent',
+            opacity: currentFloor === f ? 1 : 0.6,
           }}
         >
           {f}층

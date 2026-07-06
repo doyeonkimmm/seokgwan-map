@@ -1,16 +1,19 @@
+@font-face {
+  font-family: '의연체';
+  src: url('/온글잎의연체.ttf') format('truetype');
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html, body, #root {
   width: 100%;
   min-height: 100%;
-  overflow-x: hidden;
 }
 
 body {
-  background: #fdf0f0;
-  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  background: #FFF3F3;
 }
