@@ -134,7 +134,7 @@ export default function FloorMap({ floor, startId, endId, travelMode }: Props) {
       const cx = sx((x1 + x2) / 2)
       const cy = sy((y1 + y2) / 2)
       const fontSize = type === 'elevator' ? 6.3 : 10
-      html += `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" font-size="${fontSize}" fill="#6A635D" text-anchor="middle" dominant-baseline="middle" style="pointer-events:none">${label}</text>`
+      html += `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" font-size="${fontSize}" fill="#6A635D" text-anchor="middle" dominant-baseline="middle" font-family="'온글잎 의연체', sans-serif" style="pointer-events:none">${label}</text>`
 
       const px = sx(Math.min(x1, x2)) + G
       const py = sy(Math.max(y1, y2)) + G

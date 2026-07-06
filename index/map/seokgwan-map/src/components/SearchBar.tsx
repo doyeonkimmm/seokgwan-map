@@ -105,7 +105,7 @@ export default function SearchBar({
     const result = findPath(startId, endId, { travelMode: mode })
     if (!result) {
       const message = mode === 'elevatorOnly'
-        ? '엘리베이터만으로는 갈 수 없는 공간입니다. 학교 구조상 계단으로만 연결된 구역일 수 있어요.'
+        ? '이곳은 엘리베이터만으로는 갈 수 없습니다. 계단을 지나야 연결되는 구역일 수 있어요.'
         : '경로를 찾을 수 없습니다.'
       setError(message)
       return

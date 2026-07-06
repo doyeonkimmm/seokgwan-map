@@ -142,7 +142,6 @@ const FLOOR_NODES: Record<Floor, RawNode[]> = {
 
 const FLOOR_EDGES: Record<Floor, EdgeDef[]> = {
   1: [
-    ['EV', 'SEX'],
     ['SL2', 'LIB'], ['LIB', 'HLT'], ['HLT', 'TR'],
     ['TR', 'JR'], ['JR', 'SR'], ['JR', 'SU'],
     ['TL', 'L22'], ['L22', 'L30'], ['L30', 'BIO'],
@@ -150,7 +149,6 @@ const FLOOR_EDGES: Record<Floor, EdgeDef[]> = {
     ['TT', 'SEX'],
   ],
   2: [
-    ['EV', 'SEX'],
     ['SL2', 'R38'], ['R38', 'R37'], ['R37', 'R36'], ['R36', 'R35'], ['R35', 'TR'],
     ['TR', 'JR'], ['JR', 'SR'],
     ['JR', 'R13'], ['R13', 'R22'], ['R22', 'R30'], ['R30', 'SU'],
@@ -159,7 +157,7 @@ const FLOOR_EDGES: Record<Floor, EdgeDef[]> = {
     ['TT', 'SEX'], ['T25', 'CAF'], ['SEX', 'CAF'],
   ],
   3: [
-    ['EV', 'SEX'], ['SL', 'CP'], ['CP', 'AI'], ['AI', 'B31'],
+    ['SL', 'CP'], ['CP', 'AI'], ['AI', 'B31'],
     ['B31', 'B32'], ['B32', 'B33'], ['B33', 'B34'], ['B34', 'TR'],
     ['TR', 'JR'], ['JR', 'SR'],
     ['JR', 'R22'], ['R22', 'R30'], ['R30', 'SU'],
@@ -168,13 +166,20 @@ const FLOOR_EDGES: Record<Floor, EdgeDef[]> = {
     ['TT', 'SEX'], ['T22', 'CAF'], ['SEX', 'CAF'],
   ],
   4: [
-    ['EV', 'SEX'], ['SL', 'GH'], ['GH', 'G12'], ['G12', 'CR'],
+    ['SL', 'GH'], ['GH', 'G12'], ['G12', 'CR'],
     ['CR', 'ST'], ['ST', 'A2'], ['A2', 'A1'], ['A1', 'AST'],
     ['AST', 'JR'], ['JR', 'SR'],
     ['JR', 'R13'], ['R13', 'R22'], ['R22', 'R30'], ['R30', 'SU'],
     ['TL', 'L13'], ['L13', 'L22'], ['L22', 'L30'], ['L30', 'ES'],
     ['ES', 'TT'], ['TT', 'LE'], ['LE', 'MU'], ['MU', 'SU'], ['TT', 'SEX'],
   ],
+}
+
+const ELEVATOR_ACCESS_EDGES: Record<Floor, EdgeDef[]> = {
+  1: [['EV', 'TT']],
+  2: [['EV', 'TT']],
+  3: [['EV', 'TT']],
+  4: [['EV', 'TT']],
 }
 
 const STAIR_CONNECTIONS: { key: string; floors: Floor[] }[] = [
@@ -231,8 +236,24 @@ export function buildGraph(options: PathOptions = {}): {
 
   ;(Object.entries(FLOOR_EDGES) as [string, EdgeDef[]][]).forEach(([floorStr, edges]) => {
     const floor = Number(floorStr) as Floor
-    edges.forEach(([kA, kB]) => addEdge(nid(floor, kA), nid(floor, kB)))
+    edges.forEach(([kA, kB]) => {
+      const idA = nid(floor, kA)
+      const idB = nid(floor, kB)
+      if (mode === 'elevatorOnly') {
+        const nodeA = nodes.get(idA)
+        const nodeB = nodes.get(idB)
+        if (nodeA?.type === 'stairs' || nodeB?.type === 'stairs') return
+      }
+      addEdge(idA, idB)
+    })
   })
+
+  if (canUseElevator(mode)) {
+    ;(Object.entries(ELEVATOR_ACCESS_EDGES) as [string, EdgeDef[]][]).forEach(([floorStr, edges]) => {
+      const floor = Number(floorStr) as Floor
+      edges.forEach(([kA, kB]) => addEdge(nid(floor, kA), nid(floor, kB)))
+    })
+  }
 
   if (canUseStairs(mode)) {
     STAIR_CONNECTIONS.forEach(({ key, floors }) => {

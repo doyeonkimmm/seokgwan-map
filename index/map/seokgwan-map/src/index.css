@@ -1,6 +1,9 @@
 @font-face {
-  font-family: '의연체';
-  src: url('/온글잎의연체.ttf') format('truetype');
+  font-family: '온글잎 의연체';
+  src: url('/seokgwan-map/index/map/온글잎의연체.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 * {
@@ -16,4 +19,5 @@ html, body, #root {
 
 body {
   background: #FFF3F3;
+  font-family: '온글잎 의연체', sans-serif;
 }
